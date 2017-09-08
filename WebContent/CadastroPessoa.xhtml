@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=URF-8" />
+	<title>Cadastro Pessoa</title>
+
+	<h:outputStylesheet library="css" name="sistema.css" />
+
+</h:head>
+<h:body>
+
+	<h1>Nova Pessoa</h1>
+
+	<h:form>
+
+		<h:button value="Nova Pessoa" style="margin-right: 5px"
+			outcome="CadastroPessoa" />
+		<h:button value="Consulta Pessoa" outcome="ConsultaPessoa" />
+
+		<h:messages showDetail="false" showSummary="true"
+			styleClass="form-messages" errorClass="error" infoClass="info" />
+
+		<h:panelGrid columns="2" styleClass="form-grid"
+			columnClasses="label, campo">
+
+			<h:outputLabel value="Nome" />
+			<h:inputText size="30" required="true" label="nome"
+				value="#{cadastroPessoaBean.pessoa.nome}" />
+
+			<h:outputLabel value="Tipo" id="tipoPessoaMarcado" />
+			<h:selectOneRadio for="tipoPessoaMarcado" label="tipo de Pessoa"
+				value="#{cadastroPessoaBean.pessoa.tipo}" required="true"
+				immediate="true"
+				valueChangeListener="#{cadastroPessoaBean.tipoPessoaSelecionado}"
+				onchange="submit();">
+				<f:selectItems value="#{cadastroPessoaBean.tipoPessoa}"
+					var="tipoPessoa" itemLabel="#{tipoPessoa.descricao}"
+					itemValue="#{tipoPessoa}" />
+			</h:selectOneRadio>
+
+			<h:outputLabel value="Email" id="email" />
+			<h:panelGroup>
+				<h:inputText size="30" label="email" required="true"
+					value="#{cadastroPessoaBean.pessoa.email}">
+					<f:validateRegex
+						pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+				</h:inputText>
+				<h:message for="email" errorClass="erro" />
+			</h:panelGroup>
+
+			<h:outputLabel value="Data de Nascimento"
+				rendered="#{cadastroPessoaBean.pessoa.tipo == ('FISICA')}" />
+			<h:panelGroup>
+				<h:inputText size="15" label="dataNascimento"
+					value="#{cadastroPessoaBean.pessoa.dataNascimento}"
+					rendered="#{cadastroPessoaBean.pessoa.tipo == ('FISICA')}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+					<f:validator
+						validatorId="com.sistema.financeiro.ValidadorCondicionalPessoaFisica" />
+					<f:attribute name="checadoPessoaFisica"
+						value="#{cadastroPessoaBean.pessoa.tipo}" />
+				</h:inputText>
+			</h:panelGroup>
+
+			<h:outputLabel value="Ramo de atividade" rendered="#{cadastroPessoaBean.pessoa.tipo == ('JURIDICA')}" />
+				<h:selectOneMenu value="#{cadastroPessoaBean.pessoa.ramoAtividade}"
+					             label="pessoa"
+					             rendered="#{cadastroPessoaBean.pessoa.tipo == ('JURIDICA')}">
+					<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+					<f:selectItems value="#{cadastroPessoaBean.ramoAtividades}"
+						           var="ramo"
+						           itemValue="#{ramo}"
+						           itemLabel="#{ramo.descricao}" />
+					<f:validator validatorId="com.sistema.financeiro.ValidadorCondicionalPessoaJuridica" />
+					<f:attribute name="checadoPessoaJuridica" value="#{cadastroPessoaBean.pessoa.tipo}" />
+				</h:selectOneMenu>
+			
+			<h:outputLabel />
+			<h:commandButton value="Cadastrar" action="#{cadastroPessoaBean.cadastrar}" />
+
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>

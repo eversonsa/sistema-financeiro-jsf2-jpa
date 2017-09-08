@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+
+td.nome {
+	width: 90px;
+	text-align: center;
+}
+
+td.tipo {
+	width: 20px;
+	text-align: center;
+}
+
+td.ramo.de.atividade {
+	width: 90px;
+	text-align: center;
+}
+td.acoes { 
+	width: 40px;
+	text-align: center;
+}
