@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
@@ -13,6 +14,7 @@ public class Lancamento implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	@Id
 	private Integer codigo;
 	private TipoLancamento tipo;
 	private Pessoa pessoa;
