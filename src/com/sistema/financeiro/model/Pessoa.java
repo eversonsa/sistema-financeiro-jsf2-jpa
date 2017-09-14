@@ -12,10 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 
+@SuppressWarnings("serial")
 @Entity
-@Table
+@Table(name="pessoa")
 public class Pessoa implements Serializable{
 	
 	@Id
@@ -26,16 +26,18 @@ public class Pessoa implements Serializable{
 	private String nome;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name="tipo_pessoa")
 	private TipoPessoa tipo;
 	
 	@Column
 	private String email;
 	
+	
 	@Column(name="data_nascimento")
 	private Date dataNascimento;
-
+	
 	@ManyToOne
-	@JoinColumn(name="codigo_ramoAtividade")
+	@JoinColumn(name="codigo_ramo_atividade")
 	private RamoAtividade ramoAtividade;
 	
 	

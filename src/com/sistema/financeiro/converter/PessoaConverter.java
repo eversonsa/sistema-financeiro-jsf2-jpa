@@ -5,8 +5,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import org.hibernate.Session;
+
 import com.sistema.financeiro.model.Pessoa;
-import com.sistema.financeiro.service.GestaoPessoas;
+import com.sistema.financeiro.util.FacesUtilFilter;
 
 @FacesConverter(forClass=Pessoa.class)
 public class PessoaConverter implements Converter{
@@ -14,12 +16,14 @@ public class PessoaConverter implements Converter{
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		Pessoa pessoa = null;
+		
 		if(value != null){
-			GestaoPessoas gestaoPessoa = new GestaoPessoas();
-			pessoa = gestaoPessoa.buscarPorCodigoID(new Integer(value));
+			Session session = (Session) FacesUtilFilter.getRequestAttribute("session");
+			
+			pessoa = (Pessoa) session.get(Pessoa.class, new Integer(value));
 		}
 		
-		return null;
+		return pessoa;
 	}
 
 	@Override

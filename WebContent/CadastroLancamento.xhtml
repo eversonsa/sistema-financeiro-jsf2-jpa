@@ -27,7 +27,7 @@
 				<h:outputLabel value="Tipo"/>	
 				<h:selectOneRadio value="#{cadastroLancamentoBean.lancamento.tipo}"
 						required="true" label="Tipo do lançamento">
-					<f:selectItems value="#{cadastroLancamentoBean.tipoLancamento}"
+					<f:selectItems value="#{cadastroLancamentoBean.tipoLancamentos}"
 						var="tipoLancamento" itemLabel="#{tipoLancamento.descricao}"
 						itemValue="#{tipoLancamento}" />
                 </h:selectOneRadio>
@@ -66,12 +66,13 @@
 			
 			<h:outputLabel value="Data de Pagamento" rendered="#{cadastroLancamentoBean.lancamento.pago}" />
 			<h:inputText size="12" required="true" label="data Pagamento"
+			             value="#{cadastroLancamentoBean.lancamento.dataPagamento}"
 			             rendered="#{cadastroLancamentoBean.lancamento.pago}">
 				<f:convertDateTime pattern="dd/MM/yyyy"/>
-				<f:validator validatorId="com.sistema.financeiro.RequeridoCondicionalValidator"/>
 				<f:validator validatorId="dataFutura"/>
 				<f:attribute name="checado" value="cadastroLancamentoBean.lancamento.pago"/>
 			</h:inputText>
+			
 			<h:outputLabel/>
 			<h:commandButton value="Cadastrar" action="#{cadastroLancamentoBean.cadastrar}"/>
 			

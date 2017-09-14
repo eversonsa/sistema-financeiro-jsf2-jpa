@@ -1,25 +1,32 @@
 package com.sistema.financeiro.view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
+import com.sistema.financeiro.model.Pessoa;
+import com.sistema.financeiro.repository.Pessoas;
+import com.sistema.financeiro.util.Repositorios;
+
+@SuppressWarnings("serial")
 @ManagedBean
-@SessionScoped
-public class ConsultaPessoaBean {
+@ViewScoped
+public class ConsultaPessoaBean implements Serializable{
 	
-	private List<String> pessoas = new ArrayList<String>();
-	
+	private List<Pessoa> pessoas = new ArrayList<Pessoa>();
+	private Repositorios repositorios = new Repositorios(); 
 	@PostConstruct
 	public void inicializar(){
-	for(int i = 0; i < 10; i++){
-		pessoas.add("");
-	 }
+		
+		Pessoas pessoas = this.repositorios.getPessoas();
+		this.pessoas = pessoas.buscarTodasPessoas();
+		
 	}
-	public List<String> getPessoas() {
+	public List<Pessoa> getPessoas() {
 		return pessoas;
 	}
 	

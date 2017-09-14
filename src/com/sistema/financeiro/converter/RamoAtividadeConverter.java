@@ -5,8 +5,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import org.hibernate.Session;
+
 import com.sistema.financeiro.model.RamoAtividade;
-import com.sistema.financeiro.service.GestaoRamosAtividades;
+import com.sistema.financeiro.util.FacesUtilFilter;
 
 @FacesConverter(forClass=RamoAtividade.class)
 public class RamoAtividadeConverter implements Converter {
@@ -16,8 +18,10 @@ public class RamoAtividadeConverter implements Converter {
 		
 		RamoAtividade ramoAtividade = null;
 		if(value != null){
-			GestaoRamosAtividades gestaoRamoAtividade = new GestaoRamosAtividades();
-			return ramoAtividade = gestaoRamoAtividade.buscarPorCodigoRamoAtividade(new Integer(value));
+			
+			Session session = (Session) FacesUtilFilter.getRequestAttribute("session");
+			
+			ramoAtividade = (RamoAtividade) session.get(RamoAtividade.class, new Integer(value));
 		}
 		return ramoAtividade;
 	}
@@ -25,8 +29,6 @@ public class RamoAtividadeConverter implements Converter {
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
 		if(value != null){
-			//RamoAtividade ramoAtividade = (RamoAtividade) value;
-			//return ramoAtividade.getCodigo().toString();
 		 return ((RamoAtividade) value).getCodigo().toString();
 		}
 		

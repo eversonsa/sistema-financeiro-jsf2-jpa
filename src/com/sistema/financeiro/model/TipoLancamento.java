@@ -3,7 +3,7 @@ package com.sistema.financeiro.model;
 public enum TipoLancamento {
 	
 	RECEITA("Receita"),
-	DESPERSA("Despesa");
+	DESPESA("Despesa");
 	
 	private String descricao;
 	

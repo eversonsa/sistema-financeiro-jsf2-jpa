@@ -1,4 +1,4 @@
-package com.sistema.financeiro.validator;
+package com.sistema.financeiro;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
