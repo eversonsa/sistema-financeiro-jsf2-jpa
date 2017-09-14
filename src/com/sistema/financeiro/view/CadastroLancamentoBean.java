@@ -16,6 +16,8 @@ import com.sistema.financeiro.model.Pessoa;
 import com.sistema.financeiro.model.TipoLancamento;
 import com.sistema.financeiro.repository.Lancamentos;
 import com.sistema.financeiro.repository.Pessoas;
+import com.sistema.financeiro.service.GestaoLancamentos;
+import com.sistema.financeiro.service.RegraNegocioException;
 import com.sistema.financeiro.util.FacesMessagesUtil;
 import com.sistema.financeiro.util.Repositorios;
 
@@ -44,14 +46,18 @@ public class CadastroLancamentoBean implements Serializable{
     }
 	
 	public void cadastrar(){
+		GestaoLancamentos gestaoServico = new GestaoLancamentos(this.repositorios.getLancamentos());
 		
-		Lancamentos lancamentos = this.repositorios.getLancamentos();
-		lancamentos.guardarLancamentos(lancamento);
+		try {
+			
+			gestaoServico.salvar(lancamento);
+			FacesMessagesUtil.adicionarMensagem(FacesMessage.SEVERITY_INFO, "Cadastro efetuado com sucesso");
+			this.lancamento = new Lancamento();
+			
+		} catch (RegraNegocioException e) {
+			FacesMessagesUtil.adicionarMensagem(FacesMessage.SEVERITY_ERROR, e.getMessage());
+		}
 		
-		this.lancamento = new Lancamento();
-		
-		FacesMessagesUtil.adicionarMensagem(FacesMessage.SEVERITY_INFO, "Cadastro efetuado com sucesso");
-
 	}
 	
 	

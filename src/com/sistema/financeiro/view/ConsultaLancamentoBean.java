@@ -12,8 +12,12 @@ import javax.faces.bean.ViewScoped;
 import org.hibernate.Session;
 
 import com.sistema.financeiro.model.Lancamento;
+import com.sistema.financeiro.repository.Lancamentos;
+import com.sistema.financeiro.service.GestaoLancamentos;
+import com.sistema.financeiro.service.RegraNegocioException;
 import com.sistema.financeiro.util.FacesMessagesUtil;
 import com.sistema.financeiro.util.FacesUtilFilter;
+import com.sistema.financeiro.util.Repositorios;
 
 @ManagedBean
 @ViewScoped
@@ -23,28 +27,34 @@ public class ConsultaLancamentoBean implements Serializable{
 	
 	private List<Lancamento> lancamentos = new ArrayList<Lancamento>();
 	private Lancamento lancamentoSelecionado;
+	private Repositorios repositorios = new Repositorios();
 	
-	@SuppressWarnings("unchecked")
+
 	@PostConstruct
 	public void inicializar(){
 		
-		Session session = (Session) FacesUtilFilter.getRequestAttribute("session");
-		
-		this.lancamentos = session.createCriteria(Lancamento.class).list();
+		Lancamentos lancamentos = this.repositorios.getLancamentos();
+		this.lancamentos = lancamentos.buscarTodosLancamentos();
 	}
 	
     public void excluir(){
 		
-    	if(this.lancamentoSelecionado.isPago()){
-    		FacesMessagesUtil.adicionarMensagem(FacesMessage.SEVERITY_INFO, "Nao pode excluir lancamento pago");
-    	}else {
-    		Session session = (Session) FacesUtilFilter.getRequestAttribute("session");
-			session.delete(this.lancamentoSelecionado);
+    	GestaoLancamentos gestaoLancamentos = new GestaoLancamentos(this.repositorios.getLancamentos());
+    	
+    	try {
+    		
+			gestaoLancamentos.salvar(lancamentoSelecionado);
+			
+			FacesMessagesUtil.adicionarMensagem(FacesMessage.SEVERITY_INFO, "Lancamento excluido com sucesso");
 			
 			this.inicializar();
 			
-			FacesMessagesUtil.adicionarMensagem(FacesMessage.SEVERITY_INFO, "excluido com sucesso");
-    	}
+		} catch (RegraNegocioException e) {
+			
+			FacesMessagesUtil.adicionarMensagem(FacesMessage.SEVERITY_ERROR, e.getMessage());
+		}
+    	
+    	
     	
 	}
 

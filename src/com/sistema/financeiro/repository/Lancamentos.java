@@ -9,5 +9,6 @@ public interface Lancamentos {
 	public List<Lancamento> buscarTodosLancamentos();
 	public Lancamento guardarLancamentos(Lancamento lancamento);
     public void removerLancamentos(Lancamento lancamento);
+	public Lancamento comDadosIguais(Lancamento lancamento);
     
 }
